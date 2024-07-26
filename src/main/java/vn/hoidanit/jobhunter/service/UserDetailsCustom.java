@@ -1,5 +1,7 @@
 package vn.hoidanit.jobhunter.service;
 
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,9 +20,11 @@ public class UserDetailsCustom implements UserDetailsService {
         this.userService = userService;
     }
 
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws BadCredentialsException {
         vn.hoidanit.jobhunter.domain.User user = this.userService.getUserByEmail(username);
-        
+        if (user == null) {
+            throw new UsernameNotFoundException(username);
+        }
         return new User(
                 user.getEmail(),
                 user.getPassword(),

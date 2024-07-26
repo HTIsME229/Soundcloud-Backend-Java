@@ -2,6 +2,7 @@ package vn.hoidanit.jobhunter.utils.error;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
@@ -39,15 +40,15 @@ public class GlobalException {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
     }
 
-    @ExceptionHandler(value = AuthenticationException.class)
-    public ResponseEntity<RestResponse<Object>> handleIdInvalidLoginNotFoundExeption(AuthenticationException ex) {
+    @ExceptionHandler(value = {
+            UsernameNotFoundException.class,
+            BadCredentialsException.class
+    })
+    public ResponseEntity<RestResponse<Object>> handleIdInvalidLoginNotFoundExeption(Exception ex) {
         RestResponse<Object> res = new RestResponse<Object>();
         res.setStatusCode(HttpStatus.NOT_FOUND.value());
-        res.setError("call API fails");
-        if (ex.getMessage().equals("Bad credentials"))
-            res.setMessage("Password is incorrect");
-        else
-            res.setMessage("User Not Found");
+        res.setError(ex.getMessage());
+        res.setMessage("Login Information Invalid");
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
     }
 
