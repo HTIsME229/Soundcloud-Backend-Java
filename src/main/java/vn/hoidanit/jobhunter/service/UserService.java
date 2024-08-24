@@ -11,18 +11,17 @@ import java.util.Optional;
 @Service
 public class UserService {
     UserRepository userRepository;
-    PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
     }
 
     public User handleSaveuUser(User datauser) {
         User user = new User();
         user.setEmail(datauser.getEmail());
         user.setName(datauser.getName());
-        user.setPassword(this.passwordEncoder.encode(datauser.getPassword()));
+//        user.setPassword(this.passwordEncoder.encode(datauser.getPassword()));
         return this.userRepository.save(user);
     }
 
