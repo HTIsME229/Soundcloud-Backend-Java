@@ -1,20 +1,27 @@
 package vn.hoidanit.jobhunter.service;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import vn.hoidanit.jobhunter.domain.DTO.RestLoginSocial;
+import vn.hoidanit.jobhunter.domain.DTO.SocialMediaAccountDTO;
 import vn.hoidanit.jobhunter.domain.User;
 import vn.hoidanit.jobhunter.repository.UserRepository;
+import vn.hoidanit.jobhunter.utils.SecurityUtil;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 @Service
 public class UserService {
     UserRepository userRepository;
+SecurityUtil securityUtil;
 
-
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, SecurityUtil securityUtil) {
         this.userRepository = userRepository;
+        this.securityUtil = securityUtil;
     }
 
     public User handleSaveuUser(User datauser) {
@@ -61,4 +68,39 @@ public class UserService {
     public User getUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
+    public RestLoginSocial handleCreatUserBySocial(SocialMediaAccountDTO accountDTO) {
+           String type =  accountDTO.getType().toLowerCase(Locale.ROOT);
+           User user = new User();
+           User saveUser = new User();
+           switch (type) {
+               case "github":
+                   if(!this.userRepository.existsByTypeAndEmail(type,accountDTO.getUsername()))
+                   {
+                   user.setName(accountDTO.getUsername());
+                   user.setEmail(accountDTO.getUsername());
+                   user.setType(type);
+                   saveUser=  this.userRepository.save(user);}
+                   else{
+                       saveUser = this.userRepository.findByEmailAndType(accountDTO.getUsername(),accountDTO.getType());
+                   }
+           }
+           RestLoginSocial restLoginSocial = new RestLoginSocial();
+        String AccessToken = this.securityUtil.CreateTokenWithSocial(accountDTO.getUsername());
+        restLoginSocial.setAccess_token(AccessToken);
+        String RefreshToken = this.securityUtil.CreateRefreshToken(accountDTO.getUsername());
+        restLoginSocial.setRefresh_token(RefreshToken);
+        RestLoginSocial.UserSocial userSocial = new RestLoginSocial.UserSocial();
+        userSocial.setId(saveUser.getId());
+        userSocial.setUsername(saveUser.getName());
+        userSocial.setType(type);
+        userSocial.setRole(saveUser.getRole());
+
+        userSocial.setVerify(true);
+        restLoginSocial.setUser(userSocial);
+
+
+        return restLoginSocial;
+
+    }
+
 }

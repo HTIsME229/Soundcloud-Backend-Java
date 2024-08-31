@@ -1,6 +1,7 @@
 package vn.hoidanit.jobhunter.domain;
 
 import jakarta.persistence.*;
+import vn.hoidanit.jobhunter.utils.ENUM.Gender;
 
 @Entity
 @Table(name = "users")
@@ -11,6 +12,42 @@ public class User {
     private String name;
     private String password;
     private String email;
+   private Gender gender;
+   private  String address;
+   private String role;
+private  String type;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     public long getId() {
         return id;
