@@ -89,9 +89,9 @@ public class SecurityConfiguration {
                 )
                 .csrf(c -> c.disable())
                 .cors(Customizer.withDefaults())
-//                .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults())
-//                        .authenticationEntryPoint(customAuthenticationEntryPoint)
-//                )
+                .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults())
+                        .authenticationEntryPoint(customAuthenticationEntryPoint)
+                )
                 .logout(log -> log
                         .logoutSuccessUrl("/api/v1/logout")
                         .deleteCookies("refresh_token"))

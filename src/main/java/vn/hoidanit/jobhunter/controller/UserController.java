@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import vn.hoidanit.jobhunter.domain.DTO.RestUser;
 import vn.hoidanit.jobhunter.domain.User;
 import vn.hoidanit.jobhunter.service.UserService;
 import vn.hoidanit.jobhunter.utils.error.IdInvalidExeption;
@@ -19,12 +20,12 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<User> CreateNewUser(@RequestBody User datauser) {
+    public ResponseEntity<RestUser> CreateNewUser(@RequestBody User datauser) {
 
 
-        User newUser = this.userService.handleSaveuUser(datauser);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(datauser);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.userService.handleSaveuUser(datauser));
     }
 
     @GetMapping("/users/{id}")

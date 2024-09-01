@@ -5,7 +5,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import vn.hoidanit.jobhunter.domain.DTO.RestLoginSocial;
+import vn.hoidanit.jobhunter.domain.DTO.RestUser;
 import vn.hoidanit.jobhunter.domain.DTO.SocialMediaAccountDTO;
+import vn.hoidanit.jobhunter.domain.Role;
 import vn.hoidanit.jobhunter.domain.User;
 import vn.hoidanit.jobhunter.repository.UserRepository;
 import vn.hoidanit.jobhunter.utils.SecurityUtil;
@@ -18,20 +20,34 @@ import java.util.Optional;
 public class UserService {
     UserRepository userRepository;
 SecurityUtil securityUtil;
+    PasswordEncoder passwordEncoder;
+    RoleService roleService;
 
-    public UserService(UserRepository userRepository, SecurityUtil securityUtil) {
+    public UserService(UserRepository userRepository, SecurityUtil securityUtil, PasswordEncoder passwordEncoder, RoleService roleService) {
         this.userRepository = userRepository;
         this.securityUtil = securityUtil;
+        this.passwordEncoder = passwordEncoder;
+        this.roleService = roleService;
     }
 
-    public User handleSaveuUser(User datauser) {
+    public RestUser handleSaveuUser(User datauser) {
         User user = new User();
+        if(this.userRepository.existsByEmail(datauser.getEmail())) {
+            throw new RuntimeException("Email already exists");
+        }
         user.setEmail(datauser.getEmail());
         user.setName(datauser.getName());
-//        user.setPassword(this.passwordEncoder.encode(datauser.getPassword()));
-        return this.userRepository.save(user);
+        user.setPassword(this.passwordEncoder.encode(datauser.getPassword()));
+        user.setAddress(datauser.getAddress());
+        user.setType("SYSTEM");
+        user.setVerify(true);
+    //        Role role = this.roleService.getRoleByName(datauser.getRoles().getName());
+    //        if (role != null) {   user.setRoles(datauser.getRoles());}
+        user.setGender(datauser.getGender());
+        User SaveUser = this.userRepository.save(user);
+        RestUser rest = new RestUser(SaveUser.getId(),"User", SaveUser.getAge(), SaveUser.getGender(), SaveUser.getAddress(), SaveUser.getEmail(), SaveUser.getName(), SaveUser.getType(),SaveUser.getVerify());
+        return rest ;
     }
-
     public User handleGetUserById(long id) {
 
         Optional<User> userData = userRepository.findById(id);
@@ -93,8 +109,9 @@ SecurityUtil securityUtil;
         userSocial.setId(saveUser.getId());
         userSocial.setUsername(saveUser.getName());
         userSocial.setType(type);
-        userSocial.setRole(saveUser.getRole());
-
+userSocial.setRole("User");
+//        userSocial.setRole(saveUser.getRoles().getName());
+        userSocial.setEmail(saveUser.getEmail());
         userSocial.setVerify(true);
         restLoginSocial.setUser(userSocial);
 

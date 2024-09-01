@@ -14,8 +14,40 @@ public class User {
     private String email;
    private Gender gender;
    private  String address;
-   private String role;
-private  String type;
+   private Boolean isVerify;
+   private  String type;
+
+    public Boolean getVerify() {
+        return isVerify;
+    }
+
+    public void setVerify(Boolean verify) {
+        isVerify = verify;
+    }
+
+    @ManyToOne(fetch = FetchType.EAGER)
+@JoinColumn(name = "role_id")
+   private Role roles;
+
+    public Role getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Role roles) {
+        this.roles = roles;
+    }
+
+    private int age;
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+
 
     public String getType() {
         return type;
@@ -33,13 +65,7 @@ private  String type;
         this.gender = gender;
     }
 
-    public String getRole() {
-        return role;
-    }
 
-    public void setRole(String role) {
-        this.role = role;
-    }
 
     public String getAddress() {
         return address;
