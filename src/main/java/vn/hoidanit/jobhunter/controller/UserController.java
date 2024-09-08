@@ -1,16 +1,19 @@
 package vn.hoidanit.jobhunter.controller;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import vn.hoidanit.jobhunter.domain.DTO.ReqUser;
+import vn.hoidanit.jobhunter.domain.DTO.RestPaginateDto;
 import vn.hoidanit.jobhunter.domain.DTO.RestUser;
 import vn.hoidanit.jobhunter.domain.User;
 import vn.hoidanit.jobhunter.service.UserService;
 import vn.hoidanit.jobhunter.utils.error.IdInvalidExeption;
 
 import java.util.List;
-
+@RequestMapping("/api/v1")
 @RestController
 public class UserController {
     UserService userService;
@@ -20,7 +23,7 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<RestUser> CreateNewUser(@RequestBody User datauser) {
+    public ResponseEntity<RestUser> CreateNewUser(@RequestBody ReqUser datauser) {
 
 
 
@@ -38,10 +41,11 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public ResponseEntity<List<User>> getAllUser() {
+    public ResponseEntity<RestPaginateDto> getAllUser(Pageable pageable) {
 
-        List<User> listUser = this.userService.getAllUsers();
-        return ResponseEntity.status(HttpStatus.OK).body(listUser);
+
+
+        return ResponseEntity.status(HttpStatus.OK).body(this.userService.getAllUsers(pageable));
 
     }
 

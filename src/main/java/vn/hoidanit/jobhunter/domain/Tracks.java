@@ -1,8 +1,12 @@
 package vn.hoidanit.jobhunter.domain;
 
+    import com.fasterxml.jackson.annotation.JsonFormat;
     import jakarta.persistence.*;
+    import vn.hoidanit.jobhunter.utils.SecurityUtil;
 
-    @Entity
+    import java.time.Instant;
+
+@Entity
     @Table(name = "tracks")
     public class Tracks {
         @Id
@@ -13,7 +17,23 @@ private String description;
 private  String url;
 private String imgUrl;
 private String category;
+//    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss a", timezone = "GMT+7")
+    private Instant createdAt;
+//    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss a", timezone = "GMT+7")
+    private Instant updatedAt;
+    private String createdBy;
+    private String updatedBy;
+    @PrePersist
+    public void handleCreate() {
+        this.createdAt = Instant.now();
+        this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent() ? SecurityUtil.getCurrentUserLogin().get() : "";
+    }
 
+    @PreUpdate
+    public void handleUpdate() {
+        this.updatedAt = Instant.now();
+        this.updatedBy = SecurityUtil.getCurrentUserLogin().isPresent() ? SecurityUtil.getCurrentUserLogin().get() : "";
+    }
         public long getId() {
             return id;
         }

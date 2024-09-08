@@ -1,5 +1,7 @@
 package vn.hoidanit.jobhunter.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import vn.hoidanit.jobhunter.utils.ENUM.Gender;
 
@@ -24,7 +26,7 @@ public class User {
     public void setVerify(Boolean verify) {
         isVerify = verify;
     }
-
+@JsonIgnoreProperties("user")
     @ManyToOne(fetch = FetchType.EAGER)
 @JoinColumn(name = "role_id")
    private Role roles;

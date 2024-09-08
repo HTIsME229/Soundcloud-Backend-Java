@@ -27,7 +27,7 @@ public class TrackService {
         newTracks.setDescription(tracks.getDescription());
         newTracks.setUrl(tracks.getUrl());
         newTracks.setTitle(tracks.getTitle());
-        newTracks.setImgUrl(tracks.getImgUrl());
+        newTracks.setImgUrl(tracks.getImgUrl(   ));
         return this.trackRepository.save(newTracks);
     }
     public RestPaginateDto handleGetTracks(Pageable pageable,String category) {
@@ -56,5 +56,12 @@ public class TrackService {
         currentTrack.get().setTitle(tracks.getTitle());
         currentTrack.get().setImgUrl(tracks.getImgUrl());
         return this.trackRepository.save(currentTrack.get());
+    }
+    public void  deleteTracks(int id) {
+        Optional<Tracks> tracks = this.trackRepository.findById(id);
+        if(!tracks.isPresent()) {
+            throw   new  RuntimeException("Track not Found");
+        }
+        this.trackRepository.deleteById(id);
     }
 }

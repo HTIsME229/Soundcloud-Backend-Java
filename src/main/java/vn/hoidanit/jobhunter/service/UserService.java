@@ -1,12 +1,12 @@
 package vn.hoidanit.jobhunter.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import vn.hoidanit.jobhunter.domain.DTO.RestLoginSocial;
-import vn.hoidanit.jobhunter.domain.DTO.RestUser;
-import vn.hoidanit.jobhunter.domain.DTO.SocialMediaAccountDTO;
+import vn.hoidanit.jobhunter.domain.DTO.*;
 import vn.hoidanit.jobhunter.domain.Role;
 import vn.hoidanit.jobhunter.domain.User;
 import vn.hoidanit.jobhunter.repository.UserRepository;
@@ -30,7 +30,7 @@ SecurityUtil securityUtil;
         this.roleService = roleService;
     }
 
-    public RestUser handleSaveuUser(User datauser) {
+    public RestUser handleSaveuUser(ReqUser datauser) {
         User user = new User();
         if(this.userRepository.existsByEmail(datauser.getEmail())) {
             throw new RuntimeException("Email already exists");
@@ -41,11 +41,13 @@ SecurityUtil securityUtil;
         user.setAddress(datauser.getAddress());
         user.setType("SYSTEM");
         user.setVerify(true);
-    //        Role role = this.roleService.getRoleByName(datauser.getRoles().getName());
-    //        if (role != null) {   user.setRoles(datauser.getRoles());}
         user.setGender(datauser.getGender());
+        Role role = this.roleService.getRoleByName(datauser.getRole());
+        if(role != null) {
+            user.setRoles(role);
+        }
         User SaveUser = this.userRepository.save(user);
-        RestUser rest = new RestUser(SaveUser.getId(),"User", SaveUser.getAge(), SaveUser.getGender(), SaveUser.getAddress(), SaveUser.getEmail(), SaveUser.getName(), SaveUser.getType(),SaveUser.getVerify());
+        RestUser rest = new RestUser(SaveUser.getId(),role != null ? role.getName():null, SaveUser.getAge(), SaveUser.getGender(), SaveUser.getAddress(), SaveUser.getEmail(), SaveUser.getName(), SaveUser.getType(),SaveUser.getVerify());
         return rest ;
     }
     public User handleGetUserById(long id) {
@@ -65,8 +67,19 @@ SecurityUtil securityUtil;
         userRepository.deleteById(id);
     }
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public RestPaginateDto getAllUsers(Pageable pageable) {
+        Page<User> users = this.userRepository.findAll(pageable);
+        List<User> userList = users.getContent();
+        RestPaginateDto res = new RestPaginateDto();
+        RestPaginateDto.Meta meta = new RestPaginateDto.Meta();
+        meta.setTotalsPage(users.getTotalPages());
+        meta.setTotalsItems((int)users.getTotalElements());
+        meta.setCurrent(pageable.getPageNumber());
+        meta.setPageSize(pageable.getPageSize());
+         res.setResult(userList);
+        res.setMeta(meta);
+        return res;
+
     }
 
     public User handleUpdateUser(User dataUser) {

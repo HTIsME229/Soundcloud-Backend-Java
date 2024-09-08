@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 //import vn.hoidanit.jobhunter.domain.res.file.UploadFileDto;
 import vn.hoidanit.jobhunter.domain.DTO.UploadFileDto;
 import vn.hoidanit.jobhunter.service.FileService;
+import vn.hoidanit.jobhunter.utils.annotation.ApiMessage;
 
 
 import java.io.File;
@@ -39,11 +40,12 @@ public class FileController {
     public FileController(FileService fileService) {
         this.fileService = fileService;
     }
-
+@ApiMessage("Upload File Success ")
     @PostMapping("/files/upload")
 
-    public ResponseEntity<UploadFileDto> UpdloadFile(@RequestParam(name = "file", required = false) MultipartFile file, @RequestParam("folder") String folder) throws URISyntaxException {
+    public ResponseEntity<UploadFileDto> UpdloadFile(@RequestParam(name = "file") MultipartFile file, @RequestHeader("folder") String folder) throws URISyntaxException {
         // validate file
+
         if (file == null || file.isEmpty()) {
             throw new RuntimeException("File is empty");
         }
@@ -69,7 +71,7 @@ public class FileController {
     }
 
     @GetMapping(path = "/download")
-    public ResponseEntity<Resource> download(@RequestParam("fileName") String fileName, @RequestParam("folder") String folder) throws URISyntaxException, FileNotFoundException, IOException {
+    public ResponseEntity<Resource> download(@RequestParam("fileName") String fileName,@RequestHeader("folder") String folder) throws URISyntaxException, FileNotFoundException, IOException {
 
         URI uri = new URI(basePath + folder + "/" + fileName);
 

@@ -6,4 +6,5 @@ import vn.hoidanit.jobhunter.domain.Role;
 @Repository
 public interface RoleRepository extends CrudRepository<Role, Integer> {
     Role findByName(String name);
+    boolean existsByName(String name);
 }

@@ -71,7 +71,7 @@ public class AuthController {
             return ResponseEntity.ok(this.userService.handleCreatUserBySocial(account));
     }
     @PostMapping("/auth/register")
-    public ResponseEntity<RestUser> register(@RequestBody User user) throws RuntimeException {
+    public ResponseEntity<RestUser> register(@RequestBody ReqUser user) throws RuntimeException {
 return ResponseEntity.ok(this.userService.handleSaveuUser(user));
 
     }
