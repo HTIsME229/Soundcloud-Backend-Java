@@ -1,10 +1,12 @@
 package vn.hoidanit.jobhunter.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.hoidanit.jobhunter.domain.DTO.RestPaginateDto;
 import vn.hoidanit.jobhunter.domain.Tracks;
+import vn.hoidanit.jobhunter.domain.User;
 import vn.hoidanit.jobhunter.service.TrackService;
 import vn.hoidanit.jobhunter.utils.annotation.ApiMessage;
 
@@ -18,8 +20,9 @@ public class TrackController {
     public TrackController(TrackService trackService) {
         this.trackService = trackService;
     }
+    @ApiMessage("Create Track Success")
     @PostMapping("/tracks")
-    public ResponseEntity<Tracks> CreateTrack(@RequestBody Tracks tracks) {
+    public ResponseEntity<Tracks> CreateTrack(@RequestBody @Valid Tracks tracks) {
            return  ResponseEntity.ok(this.trackService.handleCreateTracks(tracks));
     }
     @ApiMessage("Fetch Tracks Success")
@@ -45,5 +48,9 @@ return ResponseEntity.ok(this.trackService.handleGetTracks(pageable,category));
     public ResponseEntity<Tracks> deleteTrack(@PathVariable int id) {
         this.trackService.deleteTracks(id);
         return  ResponseEntity.ok(null);
+  }
+  @PostMapping ("/tracks/users")
+    public ResponseEntity<RestPaginateDto> getTracksByUser( Pageable pageable ,@RequestBody User user) {
+                       return ResponseEntity.ok(this.trackService.handleGetTracksByUser(pageable,user.getId()));
   }
 }

@@ -7,10 +7,11 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import vn.hoidanit.jobhunter.domain.Tracks;
-
+import vn.hoidanit.jobhunter.domain.User;
 
 
 @Repository
 public interface TrackRepository extends CrudRepository<Tracks, Integer>, JpaSpecificationExecutor<Tracks> {
     Page<Tracks> findAll(Specification specification ,Pageable pageable);
+    Page<Tracks> findByCreatedBy(String createdBy, Pageable pageable);
 }

@@ -2,6 +2,7 @@ package vn.hoidanit.jobhunter.domain;
 
     import com.fasterxml.jackson.annotation.JsonFormat;
     import jakarta.persistence.*;
+    import jakarta.validation.constraints.NotEmpty;
     import vn.hoidanit.jobhunter.utils.SecurityUtil;
 
     import java.time.Instant;
@@ -12,11 +13,20 @@ package vn.hoidanit.jobhunter.domain;
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private long id;
+        @NotEmpty(message = "Vui long dien day du thong tin")
 private String title;
-private String description;
-private  String url;
-private String imgUrl;
-private String category;
+    @NotEmpty(message = "Vui long dien day du thong tin")
+
+    private String description;
+    @NotEmpty(message = "Vui long dien day du thong tin")
+
+    private  String url;
+    @NotEmpty(message = "Vui long dien day du thong tin")
+
+    private String imgUrl;
+    @NotEmpty(message = "Vui long dien day du thong tin")
+
+    private String category;
 //    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss a", timezone = "GMT+7")
     private Instant createdAt;
 //    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss a", timezone = "GMT+7")

@@ -84,7 +84,7 @@ public class SecurityConfiguration {
 //                )
                 .authorizeHttpRequests(auth -> auth
                             .requestMatchers("/api/v1/auth/register","api/v1/auth/social-media", "/api/v1/auth/login", "/api/v1/email", "/", "/api/v1/auth/refresh", "/storage/**", "/api/v1/download/**","api/v1/users/**").permitAll()
-                        .requestMatchers("/upload/**").permitAll()
+                        .requestMatchers("/upload/**","/api/v1/tracks/users").permitAll()
                         .anyRequest().authenticated()
                 )
                 .csrf(c -> c.disable())
