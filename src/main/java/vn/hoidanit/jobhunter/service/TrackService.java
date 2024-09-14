@@ -85,4 +85,12 @@ public class TrackService {
         res.setMeta(meta);
         return res;
     }
+    public  Tracks handleGetTrackById(int id)
+    {
+        Optional<Tracks> tracks = this.trackRepository.findById(id);
+        if(!tracks.isPresent()) {
+            throw   new  RuntimeException("Track not Found");
+        }
+        return tracks.get();
+    }
 }

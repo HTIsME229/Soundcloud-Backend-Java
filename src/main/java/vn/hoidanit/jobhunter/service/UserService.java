@@ -40,6 +40,7 @@ SecurityUtil securityUtil;
         user.setPassword(this.passwordEncoder.encode(datauser.getPassword()));
         user.setAddress(datauser.getAddress());
         user.setType("SYSTEM");
+        user.setAvatar("default-user.png");
         user.setVerify(true);
         user.setGender(datauser.getGender());
         Role role = this.roleService.getRoleByName(datauser.getRole());
@@ -108,6 +109,7 @@ SecurityUtil securityUtil;
                    user.setName(accountDTO.getUsername());
                    user.setEmail(accountDTO.getUsername());
                    user.setType(type);
+                       user.setAvatar("default-github.png");
                    saveUser=  this.userRepository.save(user);}
                    else{
                        saveUser = this.userRepository.findByEmailAndType(accountDTO.getUsername(),accountDTO.getType());
@@ -121,6 +123,7 @@ SecurityUtil securityUtil;
         RestLoginSocial.UserSocial userSocial = new RestLoginSocial.UserSocial();
         userSocial.setId(saveUser.getId());
         userSocial.setUsername(saveUser.getName());
+userSocial.setAvatar(saveUser.getAvatar());
         userSocial.setType(type);
 userSocial.setRole("User");
 //        userSocial.setRole(saveUser.getRoles().getName());

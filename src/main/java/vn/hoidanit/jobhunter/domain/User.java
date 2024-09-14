@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import vn.hoidanit.jobhunter.utils.ENUM.Gender;
 
+import java.util.List;
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -16,8 +18,18 @@ public class User {
     private String email;
    private Gender gender;
    private  String address;
-   private Boolean isVerify;
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    private Boolean isVerify;
    private  String type;
+   private  String avatar;
 
     public Boolean getVerify() {
         return isVerify;
@@ -30,6 +42,16 @@ public class User {
     @ManyToOne(fetch = FetchType.EAGER)
 @JoinColumn(name = "role_id")
    private Role roles;
+    @OneToMany(mappedBy = "user")
+    private List<Comment> comments;
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
 
     public Role getRoles() {
         return roles;

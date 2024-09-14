@@ -31,6 +31,16 @@ public class RestLoginSocial {
 
     public static  class  UserSocial {
         private long id;
+        private String avatar;
+
+        public String getAvatar() {
+            return avatar;
+        }
+
+        public void setAvatar(String avatar) {
+            this.avatar = avatar;
+        }
+
         private String type;
         private String username;
         private Boolean isVerify;

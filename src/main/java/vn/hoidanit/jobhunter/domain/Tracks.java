@@ -6,6 +6,7 @@ package vn.hoidanit.jobhunter.domain;
     import vn.hoidanit.jobhunter.utils.SecurityUtil;
 
     import java.time.Instant;
+    import java.util.List;
 
 @Entity
     @Table(name = "tracks")
@@ -33,6 +34,49 @@ private String title;
     private Instant updatedAt;
     private String createdBy;
     private String updatedBy;
+    @OneToMany(mappedBy = "track")
+    List<Comment> comments;
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Instant getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Instant updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
     @PrePersist
     public void handleCreate() {
         this.createdAt = Instant.now();

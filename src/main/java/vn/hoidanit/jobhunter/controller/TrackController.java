@@ -41,7 +41,7 @@ return ResponseEntity.ok(this.trackService.handleGetTracks(pageable,category));
     @ApiMessage("Fetch Tracks Success ")
   @GetMapping("/tracks/{id}")
     public ResponseEntity<Tracks> getTrackById(@PathVariable int id) {
-       return  ResponseEntity.ok(null);
+       return  ResponseEntity.ok(this.trackService.handleGetTrackById(id));
   }
   @ApiMessage("Delete Track Success")
   @DeleteMapping("/tracks/{id}")
