@@ -1,5 +1,6 @@
 package vn.hoidanit.jobhunter.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -18,7 +19,6 @@ public class User {
     private String email;
    private Gender gender;
    private  String address;
-
     public String getAvatar() {
         return avatar;
     }
@@ -44,6 +44,17 @@ public class User {
    private Role roles;
     @OneToMany(mappedBy = "user")
     private List<Comment> comments;
+    @JsonIgnore
+    @OneToOne(mappedBy = "user")
+    private  Like like;
+
+    public Like getLike() {
+        return like;
+    }
+
+    public void setLike(Like like) {
+        this.like = like;
+    }
 
     public List<Comment> getComments() {
         return comments;

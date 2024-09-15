@@ -28,17 +28,46 @@ private String title;
     @NotEmpty(message = "Vui long dien day du thong tin")
 
     private String category;
-//    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss a", timezone = "GMT+7")
+    private  int countLike;
+    private  int countPlay;
+
     private Instant createdAt;
-//    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss a", timezone = "GMT+7")
+
     private Instant updatedAt;
     private String createdBy;
     private String updatedBy;
+
     @OneToMany(mappedBy = "track")
-    List<Comment> comments;
+   private List<Comment> comments;
+    @ManyToMany(mappedBy = "tracks")
+    private  List<Like> likes;
+
+    public List<Like> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(List<Like> likes) {
+        this.likes = likes;
+    }
 
     public Instant getCreatedAt() {
         return createdAt;
+    }
+
+    public int getCountLike() {
+        return countLike;
+    }
+
+    public void setCountLike(int countLike) {
+        this.countLike = countLike;
+    }
+
+    public int getCountPlay() {
+        return countPlay;
+    }
+
+    public void setCountPlay(int countPlay) {
+        this.countPlay = countPlay;
     }
 
     public void setCreatedAt(Instant createdAt) {

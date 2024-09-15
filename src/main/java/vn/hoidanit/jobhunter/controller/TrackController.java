@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import vn.hoidanit.jobhunter.domain.DTO.ReqLikeTrack;
 import vn.hoidanit.jobhunter.domain.DTO.RestPaginateDto;
 import vn.hoidanit.jobhunter.domain.Tracks;
 import vn.hoidanit.jobhunter.domain.User;
@@ -30,6 +31,7 @@ public class TrackController {
     public ResponseEntity<RestPaginateDto> getAllTracks(Pageable pageable,@RequestParam("category") Optional<String> OCategory) {
         String category = OCategory.isPresent() ? OCategory.get() : "";
 
+
 return ResponseEntity.ok(this.trackService.handleGetTracks(pageable,category));
 
     }
@@ -52,5 +54,14 @@ return ResponseEntity.ok(this.trackService.handleGetTracks(pageable,category));
   @PostMapping ("/tracks/users")
     public ResponseEntity<RestPaginateDto> getTracksByUser( Pageable pageable ,@RequestBody User user) {
                        return ResponseEntity.ok(this.trackService.handleGetTracksByUser(pageable,user.getId()));
+  }
+  @PostMapping("/likes")
+    public ResponseEntity<Void> likeTrack(@RequestBody ReqLikeTrack likeTracks) {
+        this.trackService.handleLikeDislikeTrack(likeTracks);
+return  ResponseEntity.ok(null);
+  }
+  @GetMapping("/likes")
+    public  ResponseEntity<RestPaginateDto> getLikedTracksByUser(Pageable pageable) {
+        return ResponseEntity.ok(this.trackService.handleGetLikedTrackByUser(pageable));
   }
 }
