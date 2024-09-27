@@ -64,4 +64,10 @@ return  ResponseEntity.ok(null);
     public  ResponseEntity<RestPaginateDto> getLikedTracksByUser(Pageable pageable) {
         return ResponseEntity.ok(this.trackService.handleGetLikedTrackByUser(pageable));
   }
+  @PostMapping("/tracks/increase-view")
+    public ResponseEntity<Tracks> increaseViewTrack(@RequestBody  ReqLikeTrack likeTracks) {
+      this.trackService.handleIncreaseCountView(likeTracks);
+        return  ResponseEntity.ok(null);
+
+  }
 }

@@ -1,6 +1,8 @@
 package vn.hoidanit.jobhunter.domain;
 
     import com.fasterxml.jackson.annotation.JsonFormat;
+    import com.fasterxml.jackson.annotation.JsonIgnore;
+    import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
     import jakarta.persistence.*;
     import jakarta.validation.constraints.NotEmpty;
     import vn.hoidanit.jobhunter.utils.SecurityUtil;
@@ -38,8 +40,11 @@ private String title;
     private String updatedBy;
 
     @OneToMany(mappedBy = "track")
+    @JsonIgnoreProperties(value = {"user","track"})
    private List<Comment> comments;
+    @JsonIgnore
     @ManyToMany(mappedBy = "tracks")
+
     private  List<Like> likes;
 
     public List<Like> getLikes() {

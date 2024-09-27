@@ -198,5 +198,13 @@ public class TrackService {
         return res;
 
     }
-
+public void  handleIncreaseCountView(ReqLikeTrack reqLikeTrack)
+{
+    Optional<Tracks> currentTrack = this.trackRepository.findById((int)reqLikeTrack.getTrack());
+    if(!currentTrack.isPresent()) {
+        throw   new  RuntimeException("Track not Found");
+    }
+    currentTrack.get().setCountPlay(currentTrack.get().getCountPlay() + 1);
+    this.trackRepository.save(currentTrack.get());  
+}
 }
