@@ -1,15 +1,18 @@
 package vn.hoidanit.jobhunter.controller;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import vn.hoidanit.jobhunter.domain.DTO.ReqPlayList;
+import vn.hoidanit.jobhunter.domain.DTO.RestPaginateDto;
+import vn.hoidanit.jobhunter.domain.DTO.RestPlaylist;
 import vn.hoidanit.jobhunter.domain.Playlist;
 import vn.hoidanit.jobhunter.service.PlaylistService;
+
+import java.util.List;
+
 @RequestMapping("/api/v1/")
 @Controller
 public class PlaylistController{
@@ -17,15 +20,27 @@ public class PlaylistController{
     public PlaylistController(PlaylistService playlistService) {
         this.playlistService = playlistService;
     }
-    @PostMapping("/playlist")
-    public ResponseEntity<Playlist> CreatePlaylist(@RequestBody Playlist playlist) {
+    @PostMapping("/playlists/empty")
+    public ResponseEntity<RestPlaylist> CreatePlaylist(@RequestBody Playlist playlist) {
         return ResponseEntity.ok(this.playlistService.handleCreateEmptyPlaylist(playlist));
     }
-    @PatchMapping("/playlist")
+    @PatchMapping("/playlists")
     public ResponseEntity<Playlist> UpdatePlaylist(@RequestBody ReqPlayList playlist) {
         return  ResponseEntity.ok(this.playlistService.handleUpdatePlaylist(playlist));
 
     }
-
+    @DeleteMapping("playlists/{id}")
+    public ResponseEntity<Void> DeletePlaylist(@PathVariable int id) {
+        this.playlistService.handleDeletePlaylist(id);
+        return  ResponseEntity.ok(null);
+    }
+@GetMapping("playlists/{id}")
+    public ResponseEntity<RestPlaylist> GetPlaylistByid(@PathVariable int id) {
+        return ResponseEntity.ok(this.playlistService.handleGetPlaylistById(id));
+}
+@GetMapping("playlists")
+    public ResponseEntity<RestPaginateDto> GetPlaylistsByPaginate(Pageable pageable) {
+        return ResponseEntity.ok(this.playlistService.handleGetPlaylistWithPaginate(pageable));
+}
 
 }
