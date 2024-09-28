@@ -40,8 +40,11 @@ public class TrackService {
         newTracks.setDescription(tracks.getDescription());
         newTracks.setUrl(tracks.getUrl());
         newTracks.setTitle(tracks.getTitle());
-        newTracks.setImgUrl(tracks.getImgUrl(   ));
+        newTracks.setImgUrl(tracks.getImgUrl());
 
+        newTracks.setCountPlay(tracks.getCountPlay());
+
+        newTracks.setCountLike(tracks.getCountLike());
         return this.trackRepository.save(newTracks);
     }
     public RestPaginateDto handleGetTracks(Pageable pageable,String category) {

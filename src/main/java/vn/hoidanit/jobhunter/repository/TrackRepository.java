@@ -10,10 +10,13 @@ import vn.hoidanit.jobhunter.domain.Like;
 import vn.hoidanit.jobhunter.domain.Tracks;
 import vn.hoidanit.jobhunter.domain.User;
 
+import java.util.List;
+
 
 @Repository
 public interface TrackRepository extends CrudRepository<Tracks, Integer>, JpaSpecificationExecutor<Tracks> {
     Page<Tracks> findAll(Specification specification ,Pageable pageable);
     Page<Tracks> findByCreatedBy(String createdBy, Pageable pageable);
     Page<Tracks> findByLikes(Like like, Pageable pageable);
+    List<Tracks> findByIdIn(List<Integer> ids);
 }

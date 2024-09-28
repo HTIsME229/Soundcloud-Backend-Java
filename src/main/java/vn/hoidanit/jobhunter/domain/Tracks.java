@@ -45,7 +45,19 @@ private String title;
     @JsonIgnore
     @ManyToMany(mappedBy = "tracks")
 
+
     private  List<Like> likes;
+    @ManyToOne()
+    @JoinColumn(name = "playlist_id")
+    private Playlist playlist;
+
+    public Playlist getPlaylist() {
+        return playlist;
+    }
+
+    public void setPlaylist(Playlist playlist) {
+        this.playlist = playlist;
+    }
 
     public List<Like> getLikes() {
         return likes;

@@ -47,6 +47,17 @@ public class User {
     @JsonIgnore
     @OneToOne(mappedBy = "user")
     private  Like like;
+    @OneToOne
+    @JoinColumn(name = "playlist_id")
+    private Playlist playlist;
+
+    public Playlist getPlaylist() {
+        return playlist;
+    }
+
+    public void setPlaylist(Playlist playlist) {
+        this.playlist = playlist;
+    }
 
     public Like getLike() {
         return like;
