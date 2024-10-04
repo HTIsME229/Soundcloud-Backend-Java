@@ -10,8 +10,10 @@ import vn.hoidanit.jobhunter.domain.DTO.RestPaginateDto;
 import vn.hoidanit.jobhunter.domain.DTO.RestPlaylist;
 import vn.hoidanit.jobhunter.domain.Playlist;
 import vn.hoidanit.jobhunter.service.PlaylistService;
+import vn.hoidanit.jobhunter.utils.annotation.ApiMessage;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequestMapping("/api/v1/")
 @Controller
@@ -20,11 +22,12 @@ public class PlaylistController{
     public PlaylistController(PlaylistService playlistService) {
         this.playlistService = playlistService;
     }
+    @ApiMessage(("Create Playlist Success"))
     @PostMapping("/playlists/empty")
     public ResponseEntity<RestPlaylist> CreatePlaylist(@RequestBody Playlist playlist) {
         return ResponseEntity.ok(this.playlistService.handleCreateEmptyPlaylist(playlist));
     }
-    @PatchMapping("/playlists")
+    @PutMapping("/playlists")
     public ResponseEntity<Playlist> UpdatePlaylist(@RequestBody ReqPlayList playlist) {
         return  ResponseEntity.ok(this.playlistService.handleUpdatePlaylist(playlist));
 
@@ -39,8 +42,14 @@ public class PlaylistController{
         return ResponseEntity.ok(this.playlistService.handleGetPlaylistById(id));
 }
 @GetMapping("playlists")
-    public ResponseEntity<RestPaginateDto> GetPlaylistsByPaginate(Pageable pageable) {
-        return ResponseEntity.ok(this.playlistService.handleGetPlaylistWithPaginate(pageable));
+    public ResponseEntity<RestPaginateDto> GetPlaylistsByPaginate(Pageable pageable,@RequestParam("title") Optional<String> Otitle ) {
+        String title= Otitle.isPresent() ? Otitle.get() : "";
+        return ResponseEntity.ok(this.playlistService.handleGetPlaylistWithPaginate(pageable,title));
+}
+@GetMapping("playlists/by-user")
+    public ResponseEntity<RestPaginateDto> GetPlaylistByUser(Pageable pageable,@RequestParam("title") Optional<String> Otitle) {
+    String title= Otitle.isPresent() ? Otitle.get() : "";
+        return ResponseEntity.ok(this.playlistService.handleGetPlaylistByUser(pageable,title));
 }
 
 }

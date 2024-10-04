@@ -47,15 +47,15 @@ private String title;
 
 
     private  List<Like> likes;
-    @ManyToOne()
+    @ManyToMany()
     @JoinColumn(name = "playlist_id")
-    private Playlist playlist;
+    private List<Playlist> playlist;
 
-    public Playlist getPlaylist() {
+    public List<Playlist> getPlaylist() {
         return playlist;
     }
 
-    public void setPlaylist(Playlist playlist) {
+    public void setPlaylist(List<Playlist> playlist) {
         this.playlist = playlist;
     }
 

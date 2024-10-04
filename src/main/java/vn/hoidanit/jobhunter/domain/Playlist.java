@@ -1,5 +1,6 @@
 package vn.hoidanit.jobhunter.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import vn.hoidanit.jobhunter.utils.SecurityUtil;
 
@@ -13,6 +14,7 @@ public class Playlist {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String title;
+    @JsonProperty("isPublic")
     private boolean isPublic;
     private Instant createdAt;
 
@@ -40,8 +42,8 @@ public class Playlist {
         return isPublic;
     }
 
-    public void setPublic(boolean aPublic) {
-        isPublic = aPublic;
+    public void setPublic(boolean isPublic) {
+        isPublic = isPublic;
     }
 
     public Instant getCreatedAt() {
@@ -91,9 +93,12 @@ public class Playlist {
     public void setUser(User user) {
         this.user = user;
     }
-
-    @OneToMany()
-   private List<Tracks> tracks;
+ @ManyToMany
+ @JoinTable(
+         name = "playlist_track",
+         joinColumns = @JoinColumn(name = "playlist_id"),
+         inverseJoinColumns = @JoinColumn(name = "track_id"))
+ private List<Tracks> tracks;
     @OneToOne
    private User user;
     @PrePersist

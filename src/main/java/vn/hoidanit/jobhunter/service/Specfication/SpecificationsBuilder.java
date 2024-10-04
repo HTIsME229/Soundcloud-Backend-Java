@@ -17,6 +17,7 @@ public final class SpecificationsBuilder<T> {
 
     }
 
+
     public Specification<T> whereAttributewhereAttributeObjectIn(String attributeName, List<T> value) {
         return (Root<T> root, CriteriaQuery<?> query, CriteriaBuilder cb) -> {
             return root.join(attributeName).in(value);

@@ -1,10 +1,12 @@
 package vn.hoidanit.jobhunter.domain.DTO;
 
+import java.util.List;
+
 public class ReqPlayList {
     private long id;
     private String title;
     private boolean isPublic;
-    private  listTrackId[] tracks;
+    private List<Long> tracks;
 
     public long getId() {
         return id;
@@ -14,11 +16,11 @@ public class ReqPlayList {
         this.id = id;
     }
 
-    public listTrackId[] getTracks() {
+    public List<Long> getTracks() {
         return tracks;
     }
 
-    public void setTracks(listTrackId[] tracks) {
+    public void setTracks(List<Long> tracks) {
         this.tracks = tracks;
     }
 
@@ -38,15 +40,6 @@ public class ReqPlayList {
         this.title = title;
     }
 
-    public  static  class listTrackId{
-    private  int id ;
 
-        public int getId() {
-            return id;
-        }
 
-        public void setId(int id) {
-            this.id = id;
-        }
-    }
 }

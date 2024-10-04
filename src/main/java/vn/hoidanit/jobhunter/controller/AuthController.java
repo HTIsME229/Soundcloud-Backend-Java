@@ -65,9 +65,6 @@ public class AuthController {
     }
     @PostMapping("/auth/social-media")
     public ResponseEntity<RestLoginSocial> socialMedia(@RequestBody SocialMediaAccountDTO account ) throws InvalidLogin {
-
-
-
             return ResponseEntity.ok(this.userService.handleCreatUserBySocial(account));
     }
     @PostMapping("/auth/register")

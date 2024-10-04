@@ -28,11 +28,13 @@ public class TrackController {
     }
     @ApiMessage("Fetch Tracks Success")
     @GetMapping("/tracks")
-    public ResponseEntity<RestPaginateDto> getAllTracks(Pageable pageable,@RequestParam("category") Optional<String> OCategory) {
+    public ResponseEntity<RestPaginateDto> getAllTracks(Pageable pageable,@RequestParam("category") Optional<String> OCategory,
+                                                        @RequestParam("title") Optional<String> Otitle  ) {
+        String title = Otitle.isPresent()?Otitle.get():"";
         String category = OCategory.isPresent() ? OCategory.get() : "";
 
 
-return ResponseEntity.ok(this.trackService.handleGetTracks(pageable,category));
+return ResponseEntity.ok(this.trackService.handleGetTracks(pageable,category,title));
 
     }
     @ApiMessage("Update Track Success ")

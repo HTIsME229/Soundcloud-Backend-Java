@@ -47,10 +47,11 @@ public class TrackService {
         newTracks.setCountLike(tracks.getCountLike());
         return this.trackRepository.save(newTracks);
     }
-    public RestPaginateDto handleGetTracks(Pageable pageable,String category) {
+    public RestPaginateDto handleGetTracks(Pageable pageable,String category,String title) {
         RestPaginateDto res = new RestPaginateDto();
         Specification<Tracks> tracksSpecification = Specification.where(null);
                      tracksSpecification = tracksSpecification.and(specificationsBuilder.whereAttributeContains("category", category));
+        tracksSpecification = tracksSpecification.and(specificationsBuilder.whereAttributeContains("title", title));
                 Page<Tracks> tracks = this.trackRepository.findAll(tracksSpecification,pageable);
         List<Tracks> tracksList = tracks.getContent();
 

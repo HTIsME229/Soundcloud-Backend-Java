@@ -18,5 +18,5 @@ public interface TrackRepository extends CrudRepository<Tracks, Integer>, JpaSpe
     Page<Tracks> findAll(Specification specification ,Pageable pageable);
     Page<Tracks> findByCreatedBy(String createdBy, Pageable pageable);
     Page<Tracks> findByLikes(Like like, Pageable pageable);
-    List<Tracks> findByIdIn(List<Integer> ids);
+    List<Tracks> findByIdIn(List<Long> ids);
 }
