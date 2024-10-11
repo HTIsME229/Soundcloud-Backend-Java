@@ -30,6 +30,17 @@ public class User {
     private Boolean isVerify;
    private  String type;
    private  String avatar;
+    @Column(columnDefinition = "TEXT")
+
+    private String refreshToken;
+
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
 
     public Boolean getVerify() {
         return isVerify;

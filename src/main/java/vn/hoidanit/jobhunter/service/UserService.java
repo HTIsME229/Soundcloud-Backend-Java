@@ -102,24 +102,27 @@ SecurityUtil securityUtil;
            String type =  accountDTO.getType().toLowerCase(Locale.ROOT);
            User user = new User();
            User saveUser = new User();
-           switch (type) {
-               case "github":
+
                    if(!this.userRepository.existsByTypeAndEmail(type,accountDTO.getUsername()))
                    {
                    user.setName(accountDTO.getUsername());
                    user.setEmail(accountDTO.getUsername());
+                   user.setVerify(true);
                    user.setType(type);
-                       user.setAvatar("default-github.png");
+                       user.setAvatar("user.png");
                    saveUser=  this.userRepository.save(user);}
                    else{
                        saveUser = this.userRepository.findByEmailAndType(accountDTO.getUsername(),accountDTO.getType());
                    }
-           }
+
+
            RestLoginSocial restLoginSocial = new RestLoginSocial();
         String AccessToken = this.securityUtil.CreateTokenWithSocial(accountDTO.getUsername());
         restLoginSocial.setAccess_token(AccessToken);
         String RefreshToken = this.securityUtil.CreateRefreshToken(accountDTO.getUsername());
         restLoginSocial.setRefresh_token(RefreshToken);
+        saveUser.setRefreshToken(RefreshToken);
+        this.userRepository.save(saveUser);
         RestLoginSocial.UserSocial userSocial = new RestLoginSocial.UserSocial();
         userSocial.setId(saveUser.getId());
         userSocial.setUsername(saveUser.getName());
@@ -135,5 +138,20 @@ userSocial.setRole("User");
         return restLoginSocial;
 
     }
+    public void UpdateUserToken(String Token, String email) {
+        User user = getUserByEmail(email);
+        if (user != null) {
+            user.setRefreshToken(Token);
+            this.userRepository.save(user);
+        }
+    }
 
+    public void handleRemoveRefreshToken(User user) {
+        user.setRefreshToken(null);
+        this.userRepository.save(user);
+    }
+
+    public User handleFindByEmailAndRefreshToken(String email, String refreshToken) {
+        return this.userRepository.findByEmailAndRefreshToken(email, refreshToken);
+    }
 }
